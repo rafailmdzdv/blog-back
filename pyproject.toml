@@ -1,0 +1,54 @@
+[project]
+name = "blog-back"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.2.4",
+    "django-stubs>=5.2.1",
+    "djangorestframework>=3.16.0",
+    "psycopg2>=2.9.10",
+    "python-decouple>=3.8",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+flake8-quotes.inline-quotes = "single"
+ignore = [
+  "ANN101",
+  "ANN401",
+  "D1",
+  "D203",
+  "D213",
+  "ERA001",
+  "FIX002",
+  "PGH003",
+  "Q000",
+  "RUF012",
+  "RUF100",
+  "S105",
+  "S603",
+  "S607",
+  "TD002",
+  "TD003",
+  "UP022",
+  "UP032"
+]
+exclude = [
+  "manage.py",
+  "*/migrations/*",
+]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.16.1",
+    "ruff>=0.12.2",
+    "wemake-python-styleguide>=1.2.0",
+]
