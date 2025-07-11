@@ -6,6 +6,8 @@ services:
     build:
       context: ..
       dockerfile: ./deploy/Dockerfile
+    volumes:
+      - ../media:/app/media
     command: uv run --no-sync python src/manage.py runserver 0.0.0.0:8000
     ports:
       - 8005:8000
@@ -13,6 +15,7 @@ services:
       - db
 
   db:
+    container_name: db
     image: postgres:17.5
     expose:
       - 5432

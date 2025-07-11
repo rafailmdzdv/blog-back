@@ -7,9 +7,17 @@ from posts.models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
+    icon_name = serializers.CharField(source='icon.name')
+
     class Meta:
         model = Post
-        exclude = ('content',)
+        fields = (
+            'id',
+            'title',
+            'description',
+            'icon_name',
+            'created',
+        )
 
 
 class PostContentSerializer(serializers.ModelSerializer):

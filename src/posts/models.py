@@ -19,6 +19,7 @@ class Post(models.Model):
     title = models.CharField('Title', max_length=64)
     description = models.CharField('Description', max_length=128)
     content = CompressedTextField('Content (org)')
+    icon = models.FileField('Icon')
     created = models.DateTimeField('Created', auto_now_add=True)
 
     class Meta:

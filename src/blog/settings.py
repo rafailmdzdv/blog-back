@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from decouple import config
+from django.conf import settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -113,7 +114,22 @@ USE_TZ = True
 STATIC_ROOT = str(BASE_DIR / 'static')
 STATIC_URL = 'static/'
 
+MEDIA_ROOT = str(BASE_DIR.parent / 'media')
+MEDIA_URL = 'media/'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STORAGES = settings.STORAGES
+if config('FTP_STORAGE', default=False, cast=bool):
+    STORAGES['default'] = {
+        'BACKEND': 'storages.backends.ftp.FTPStorage',
+        'OPTIONS': {
+            'location': config('FTP_LOCATION'),
+        },
+    }
+STORAGES['staticfiles'] = {
+    'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+}
