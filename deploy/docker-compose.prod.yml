@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  django:
+    container_name: django
+    build:
+      context: ..
+      dockerfile: ./deploy/Dockerfile
+    volumes:
+      - ../media:/app/media
+      - socket:/run/blog
+    restart: always
+    command: uv run --no-sync gunicorn --chdir /app/src blog.wsgi:application -w 4 -b unix:/run/blog/blog.sock
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:17.5
+    expose:
+      - 5432
+    env_file: ../.env
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: pg_isalready
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  nginx:
+    image: nginx:1.28.0-alpine
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - socket:/run/blog
+    ports:
+      - 9000:9000
+    restart: always
+    depends_on:
+      - django
+
+volumes:
+  socket:
